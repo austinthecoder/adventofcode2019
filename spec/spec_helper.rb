@@ -22,5 +22,8 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.filter_run :focus
+  config.run_all_when_everything_filtered = true
+
   config.include(Helpers)
 end
