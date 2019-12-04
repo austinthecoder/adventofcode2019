@@ -1,9 +1,8 @@
 RSpec.describe Adventofcode2019 do
-  it "has a version number" do
-    expect(Adventofcode2019::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
+  describe ".calculate_total_fuel_required" do
+    it "calculates the sum of the fuel requirements for all of the given masses" do
+      result = Adventofcode2019.calculate_total_fuel_required(masses_file_path: "#{__dir__}/sample_masses.txt")
+      expect(result).to eq(88_367)
+    end
   end
 end
