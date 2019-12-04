@@ -16,11 +16,7 @@ module Adventofcode2019
     end
 
     def next
-      return self if finished?
-
-      result = left_operand.public_send(operator, right_operand)
-      next_codes = codes.merge(result_position => result)
-      self.class.new(next_codes, next_opcode_position)
+      self.class.new(next_codes, opcode_position + 4)
     end
 
     def finished?
@@ -31,40 +27,30 @@ module Adventofcode2019
       codes.values.join(",")
     end
 
-    def code_at(position)
-      codes[position]
+    def [](index)
+      codes[index]
     end
 
     private
+
+    def next_codes
+      result_position = codes[opcode_position + 3]
+      codes.merge(result_position => calculate_result)
+    end
 
     def opcode
       codes[opcode_position]
     end
 
-    def next_opcode_position
-      opcode_position + 4
-    end
+    def calculate_result
+      left_operand = codes[codes[opcode_position + 1]]
+      right_operand = codes[codes[opcode_position + 2]]
 
-    def left_operand
-      codes[codes[opcode_position + 1]]
-    end
-
-    def right_operand
-      codes[codes[opcode_position + 2]]
-    end
-
-    def result_position
-      codes[opcode_position + 3]
-    end
-
-    def operator
       case opcode
       when 1
-        :+
+        left_operand + right_operand
       when 2
-        :*
-      else
-        raise "Unexpected opcode: #{opcode}"
+        left_operand * right_operand
       end
     end
   end

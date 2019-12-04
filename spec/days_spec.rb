@@ -18,7 +18,7 @@ RSpec.describe "days" do
   context "day 2" do
     it "10566835" do
       result = app.run_intcode_program(program_file_path: "#{files_dir}/day_02_program_fixed.txt")
-      expect(result.code_at(0)).to eq(10566835)
+      expect(result[0]).to eq(10566835)
     end
   end
 end
