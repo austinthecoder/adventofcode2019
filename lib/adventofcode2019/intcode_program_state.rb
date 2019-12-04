@@ -1,20 +1,6 @@
 # frozen_string_literal: true
 module Adventofcode2019
   IntcodeProgramState = Ivo.new(:codes, :opcode_position) do
-    class << self
-      def from_file(path)
-        # from: 10,20,30
-        #   to: { 0 => 10, 1 => 20, 2 => 30 }
-        codes = File
-          .read(path)
-          .split(",")
-          .each_with_index
-          .reduce({}) { |result, (code, index)| result.merge(index => code.to_i) }
-
-        new(codes, 0)
-      end
-    end
-
     def next
       self.class.new(next_codes, opcode_position + 4)
     end
