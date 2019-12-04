@@ -3,7 +3,11 @@ require "adventofcode2019"
 
 module Helpers
   def files_dir
-    "#{__dir__}/files"
+    @files_dir ||= "#{__dir__}/files"
+  end
+
+  def app
+    @app ||= Adventofcode2019.start
   end
 end
 

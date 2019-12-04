@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 require 'icy'
 require 'ivo'
-require 'forwardable'
 
 module Adventofcode2019
-  extend Forwardable
   extend self
 
   def start
@@ -24,12 +22,6 @@ module Adventofcode2019
       bulk_fuel_calculator: bulk_fuel_calculator,
     )
   end
-
-  def_delegators(
-    :start,
-    :calculate_total_fuel_required_v1,
-    :calculate_total_fuel_required,
-  )
 end
 
 Icy.require_tree('adventofcode2019')
