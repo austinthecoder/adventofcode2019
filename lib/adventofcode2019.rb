@@ -1,49 +1,34 @@
-require "adventofcode2019/version"
+require 'icy'
+require 'ivo'
+require 'forwardable'
 
 module Adventofcode2019
-  class FuelCalculator
-    def calculate(value)
-      value = value.to_i
-
-      fuel = (value / 3.0).floor - 2
-
-      return 0 if fuel < 1
-
-      fuel + calculate(fuel)
-    end
-  end
-
+  extend Forwardable
   extend self
 
-  def calculate_total_fuel_required_v1(masses_file_path:)
-    result = 0
+  def start
+    mass_streamer = MassStreamer.new
+    fuel_calculator_v1 = FuelCalculatorV1.new
+    bulk_fuel_calculator_v1 = BulkFuelCalculator.with(
+      mass_streamer: mass_streamer,
+      fuel_calculator: fuel_calculator_v1,
+    )
+    bulk_fuel_calculator = BulkFuelCalculator.with(
+      mass_streamer: mass_streamer,
+      fuel_calculator: FuelCalculator.new(fuel_calculator_v1),
+    )
 
-    File.foreach(masses_file_path) do |line|
-      line = line.strip
-      next if line.empty?
-
-      mass = line.to_i
-      fuel_req = (mass / 3.0).floor - 2
-      result += fuel_req
-    end
-
-    result
+    Interface.with(
+      bulk_fuel_calculator_v1: bulk_fuel_calculator_v1,
+      bulk_fuel_calculator: bulk_fuel_calculator,
+    )
   end
 
-  def calculate_total_fuel_required(masses_file_path:)
-    fuel_calculator = FuelCalculator.new
-
-    result = 0
-
-    File.foreach(masses_file_path) do |line|
-      line = line.strip
-      next if line.empty?
-
-      fuel = fuel_calculator.calculate(line)
-
-      result += fuel
-    end
-
-    result
-  end
+  def_delegators(
+    :start,
+    :calculate_total_fuel_required_v1,
+    :calculate_total_fuel_required,
+  )
 end
+
+Icy.require_tree('adventofcode2019')
