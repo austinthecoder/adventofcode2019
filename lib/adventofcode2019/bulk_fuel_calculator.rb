@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Adventofcode2019
   BulkFuelCalculator = Ivo.new(:mass_streamer, :fuel_calculator) do
     def calculate(masses_file_path:)
