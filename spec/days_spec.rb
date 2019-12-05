@@ -46,5 +46,12 @@ RSpec.describe "days" do
         expect(result).to eq(768)
       end
     end
+
+    context "part 2" do
+      it "8684" do
+        result = app.calculate_minimum_intersection_steps(wires_file_path: "#{files_dir}/day_03_wires.txt")
+        expect(result).to eq(8684)
+      end
+    end
   end
 end

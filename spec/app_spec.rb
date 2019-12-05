@@ -40,4 +40,17 @@ RSpec.describe "app" do
       end
     end
   end
+
+  describe "#calculate_minimum_intersection_steps" do
+    it "returns the fewest combined steps the wires must take to reach an intersection" do
+      {
+        '01' => 610,
+        '02' => 410,
+      }.each do |suffix, expected|
+        wires_file_path = "#{files_dir}/sample_wires_#{suffix}.txt"
+        result = app.calculate_minimum_intersection_steps(wires_file_path: wires_file_path)
+        expect(result).to eq(expected)
+      end
+    end
+  end
 end
