@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module Adventofcode2019
-  Interface = Ivo.new(:bulk_fuel_calculator_v1, :bulk_fuel_calculator) do
+  Interface = Ivo.new(:bulk_fuel_calculator_v1, :bulk_fuel_calculator, :origin) do
     def calculate_total_fuel_required_v1(masses_file_path:)
       bulk_fuel_calculator_v1.calculate(masses_file_path: masses_file_path)
     end
@@ -27,14 +27,22 @@ module Adventofcode2019
     end
 
     def calculate_distance_to_closest_intersection(wires_file_path:)
-      lines = File.readlines(wires_file_path)
+      points_builder = ->(line) do
+        moves = line.strip.split(',').map { |move| Move.from_string(move) }
 
-      wire1 = Wire.from_string(lines[0])
-      wire2 = Wire.from_string(lines[1])
+        points = moves.reduce([origin]) do |result, move|
+          result + move.points_from(result[-1])
+        end
 
-      intersecting_points = wire1.points & wire2.points
+        points.uniq
+      end
 
-      intersecting_points.map(&:distance).min
+      points1, points2 = File.readlines(wires_file_path).map(&points_builder)
+
+      (points1 & points2)
+        .reject { |point| point == origin }
+        .map { |point| point.distance_from(origin) }
+        .min
     end
   end
 end

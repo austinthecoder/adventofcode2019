@@ -1,30 +1,46 @@
 # frozen_string_literal: true
 module Adventofcode2019
-  Move = Ivo.new(:direction, :distance) do
+  Move = Ivo.new do
+    Up = Ivo.new(:distance) do
+      def points_from(point)
+        distance.times.map { point = point.up }
+      end
+    end
+
+    Right = Ivo.new(:distance) do
+      def points_from(point)
+        distance.times.map { point = point.right }
+      end
+    end
+
+    Down = Ivo.new(:distance) do
+      def points_from(point)
+        distance.times.map { point = point.down }
+      end
+    end
+
+    Left = Ivo.new(:distance) do
+      def points_from(point)
+        distance.times.map { point = point.left }
+      end
+    end
+
     class << self
       def from_string(string)
         direction = string[0]
         distance = string[1..-1].to_i
-        new(direction, distance)
-      end
-    end
 
-    def points_from(point)
-      points = []
-      distance.times.each do
-        point = case direction
+        case direction
         when 'U'
-          point.move_up
-        when 'D'
-          point.move_down
+          Up.new(distance)
         when 'R'
-          point.move_right
+          Right.new(distance)
+        when 'D'
+          Down.new(distance)
         when 'L'
-          point.move_left
+          Left.new(distance)
         end
-        points << point
       end
-      points
     end
   end
 end

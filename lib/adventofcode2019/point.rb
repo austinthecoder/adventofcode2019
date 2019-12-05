@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 module Adventofcode2019
   Point = Ivo.new(:x, :y) do
-    def move_up
+    def up
       self.class.new(x, y + 1)
     end
 
-    def move_right
+    def right
       self.class.new(x + 1, y)
     end
 
-    def move_down
+    def down
       self.class.new(x, y - 1)
     end
 
-    def move_left
+    def left
       self.class.new(x - 1, y)
     end
 
-    def distance
-      x.abs + y.abs
+    def distance_from(point)
+      (x - point.x).abs + (y - point.y).abs
     end
   end
 end

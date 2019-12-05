@@ -20,6 +20,7 @@ module Adventofcode2019
     Interface.with(
       bulk_fuel_calculator_v1: bulk_fuel_calculator_v1,
       bulk_fuel_calculator: bulk_fuel_calculator,
+      origin: Point.new(0, 0),
     )
   end
 end
