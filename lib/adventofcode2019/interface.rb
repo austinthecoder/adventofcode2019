@@ -41,5 +41,19 @@ module Adventofcode2019
 
       intersecting_points.map { |p| wires.sum { |w| w.points.index(p) } }.min
     end
+
+    def count_possible_passwords(range:)
+      range.count do |number|
+        digits = number.to_s.split('').map(&:to_i)
+
+        all_but_first = digits[1..-1]
+
+        does_not_decrease = !all_but_first.each_with_index.any? { |digit, index| digit < digits[index] }
+
+        has_same_adjacent = all_but_first.each_with_index.any? { |digit, index| digit == digits[index] }
+
+        does_not_decrease && has_same_adjacent
+      end
+    end
   end
 end

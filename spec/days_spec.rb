@@ -54,4 +54,13 @@ RSpec.describe "days" do
       end
     end
   end
+
+  context "day 4" do
+    context "part 1" do
+      it "945" do
+        result = app.count_possible_passwords(range: 264360..746325)
+        expect(result).to eq(945)
+      end
+    end
+  end
 end
