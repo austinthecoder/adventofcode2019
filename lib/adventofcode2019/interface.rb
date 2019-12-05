@@ -25,5 +25,16 @@ module Adventofcode2019
       state = state.next while !state.finished?
       state
     end
+
+    def calculate_distance_to_closest_intersection(wires_file_path:)
+      lines = File.readlines(wires_file_path)
+
+      wire1 = Wire.from_string(lines[0])
+      wire2 = Wire.from_string(lines[1])
+
+      intersecting_points = wire1.points & wire2.points
+
+      intersecting_points.map(&:distance).min
+    end
   end
 end

@@ -38,4 +38,13 @@ RSpec.describe "days" do
       end
     end
   end
+
+  context "day 3" do
+    context "part 1" do
+      it "768" do
+        result = app.calculate_distance_to_closest_intersection(wires_file_path: "#{files_dir}/day_03_wires.txt")
+        expect(result).to eq(768)
+      end
+    end
+  end
 end

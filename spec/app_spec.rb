@@ -27,4 +27,17 @@ RSpec.describe "app" do
       end
     end
   end
+
+  describe "#calculate_distance_to_closest_intersection" do
+    it "returns the Manhattan distance from the central port to the closest intersection" do
+      {
+        '01' => 159,
+        '02' => 135,
+      }.each do |suffix, expected|
+        wires_file_path = "#{files_dir}/sample_wires_#{suffix}.txt"
+        result = app.calculate_distance_to_closest_intersection(wires_file_path: wires_file_path)
+        expect(result).to eq(expected)
+      end
+    end
+  end
 end
