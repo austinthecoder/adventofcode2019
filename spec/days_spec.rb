@@ -26,5 +26,16 @@ RSpec.describe "days" do
         expect(result[0]).to eq(10566835)
       end
     end
+
+    context "part 2" do
+      it "2347" do
+        result = app.run_intcode_program(
+          program_file_path: "#{files_dir}/day_02_program.txt",
+          noun: 23,
+          verb: 47,
+        )
+        expect(result[0]).to eq(19690720)
+      end
+    end
   end
 end
