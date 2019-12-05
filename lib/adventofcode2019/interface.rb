@@ -27,39 +27,19 @@ module Adventofcode2019
     end
 
     def calculate_distance_to_closest_intersection(wires_file_path:)
-      points_builder = ->(line) do
-        moves = line.strip.split(',').map { |move| Move.from_string(move) }
+      wires = File.readlines(wires_file_path).map { |line| Wire.from_string(line, origin) }
 
-        points = moves.reduce([origin]) do |result, move|
-          result + move.points_from(result[-1])
-        end
+      intersecting_points = wires.map(&:points).reduce(:&).reject { |p| p == origin }
 
-        points.uniq
-      end
-
-      points1, points2 = File.readlines(wires_file_path).map(&points_builder)
-
-      intersecting_points = (points1 & points2).reject { |point| point == origin }
-
-      intersecting_points.map { |point| point.distance_from(origin) }.min
+      intersecting_points.map { |p| p.distance_from(origin) }.min
     end
 
     def calculate_minimum_intersection_steps(wires_file_path:)
-      points_builder = ->(line) do
-        moves = line.strip.split(',').map { |move| Move.from_string(move) }
+      wires = File.readlines(wires_file_path).map { |line| Wire.from_string(line, origin) }
 
-        points = moves.reduce([origin]) do |result, move|
-          result + move.points_from(result[-1])
-        end
+      intersecting_points = wires.map(&:points).reduce(:&).reject { |p| p == origin }
 
-        points.uniq
-      end
-
-      points1, points2 = File.readlines(wires_file_path).map(&points_builder)
-
-      intersecting_points = (points1 & points2).reject { |point| point == origin }
-
-      intersecting_points.map { |point| points1.index(point) + points2.index(point) }.min
+      intersecting_points.map { |p| wires.sum { |w| w.points.index(p) } }.min
     end
   end
 end

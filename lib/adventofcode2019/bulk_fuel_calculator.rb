@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 module Adventofcode2019
-  BulkFuelCalculator = Ivo.new(:mass_streamer, :fuel_calculator) do
+  BulkFuelCalculator = Ivo.new(:fuel_calculator) do
     def calculate(masses_file_path:)
-      result = 0
-
-      mass_streamer.stream(file_path: masses_file_path) do |mass|
-        result += fuel_calculator.calculate(mass)
+      File.foreach(masses_file_path).sum do |line|
+        fuel_calculator.calculate(line.to_i)
       end
-
-      result
     end
   end
 end
