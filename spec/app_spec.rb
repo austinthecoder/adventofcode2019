@@ -61,4 +61,12 @@ RSpec.describe "app" do
       expect(app.password_valid_v1?(123789)).to eq(false)
     end
   end
+
+  describe "#count_valid_passwords" do
+    it "returns a count of the passwords that meet the password criteria in the given range" do
+      expect(app.password_valid?(112233)).to eq(true)
+      expect(app.password_valid?(123444)).to eq(false)
+      expect(app.password_valid?(111122)).to eq(true)
+    end
+  end
 end

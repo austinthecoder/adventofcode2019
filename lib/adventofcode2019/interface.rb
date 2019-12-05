@@ -4,7 +4,8 @@ module Adventofcode2019
     :bulk_fuel_calculator_v1,
     :bulk_fuel_calculator,
     :origin,
-    :adjacent_repeated_digit_regex,
+    :password_validators_v1,
+    :password_validators,
   ) do
     def calculate_total_fuel_required_v1(masses_file_path:)
       bulk_fuel_calculator_v1.calculate(masses_file_path: masses_file_path)
@@ -49,17 +50,20 @@ module Adventofcode2019
 
     def password_valid_v1?(password)
       password = password.to_s
-      digits = password.split('').map(&:to_i)
+      password_validators_v1.all? { |v| v.valid?(password.to_s) }
+    end
 
-      does_not_decrease = !digits[1..-1].each_with_index.any? { |digit, index| digit < digits[index] }
-
-      has_adjacent_repeated_digit = password.match?(adjacent_repeated_digit_regex)
-
-      does_not_decrease && has_adjacent_repeated_digit
+    def password_valid?(password)
+      password = password.to_s
+      password_validators.all? { |v| v.valid?(password.to_s) }
     end
 
     def count_valid_passwords_v1(range:)
       range.count { |number| password_valid_v1?(number) }
+    end
+
+    def count_valid_passwords(range:)
+      range.count { |number| password_valid?(number) }
     end
   end
 end
