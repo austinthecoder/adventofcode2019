@@ -14,6 +14,7 @@ module Adventofcode2019
       bulk_fuel_calculator_v1: bulk_fuel_calculator_v1,
       bulk_fuel_calculator: bulk_fuel_calculator,
       origin: Point.new(0, 0),
+      adjacent_repeated_digit_regex: /(\d)\1+/,
     )
   end
 end

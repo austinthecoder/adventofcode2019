@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 module Adventofcode2019
-  Interface = Ivo.new(:bulk_fuel_calculator_v1, :bulk_fuel_calculator, :origin) do
+  Interface = Ivo.new(
+    :bulk_fuel_calculator_v1,
+    :bulk_fuel_calculator,
+    :origin,
+    :adjacent_repeated_digit_regex,
+  ) do
     def calculate_total_fuel_required_v1(masses_file_path:)
       bulk_fuel_calculator_v1.calculate(masses_file_path: masses_file_path)
     end
@@ -42,18 +47,19 @@ module Adventofcode2019
       intersecting_points.map { |p| wires.sum { |w| w.points.index(p) } }.min
     end
 
-    def count_possible_passwords(range:)
-      range.count do |number|
-        digits = number.to_s.split('').map(&:to_i)
+    def password_valid_v1?(password)
+      password = password.to_s
+      digits = password.split('').map(&:to_i)
 
-        all_but_first = digits[1..-1]
+      does_not_decrease = !digits[1..-1].each_with_index.any? { |digit, index| digit < digits[index] }
 
-        does_not_decrease = !all_but_first.each_with_index.any? { |digit, index| digit < digits[index] }
+      has_adjacent_repeated_digit = password.match?(adjacent_repeated_digit_regex)
 
-        has_same_adjacent = all_but_first.each_with_index.any? { |digit, index| digit == digits[index] }
+      does_not_decrease && has_adjacent_repeated_digit
+    end
 
-        does_not_decrease && has_same_adjacent
-      end
+    def count_valid_passwords_v1(range:)
+      range.count { |number| password_valid_v1?(number) }
     end
   end
 end
