@@ -2,7 +2,7 @@
 module Adventofcode2019
   RegexValidator = Ivo.new(:regex) do
     def valid?(password)
-      password.to_s.match?(regex)
+      regex.match?(password.to_s)
     end
   end
 end

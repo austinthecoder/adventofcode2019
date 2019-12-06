@@ -16,12 +16,12 @@ module Adventofcode2019
       bulk_fuel_calculator: bulk_fuel_calculator,
       origin: Point.new(0, 0),
       password_validators_v1: [
+        RegexValidator.new(/(\d)\1+/),
         does_not_decrease_validator,
-        RegexValidator.new(/(\d)\1+/)
       ],
       password_validators: [
-        does_not_decrease_validator,
         RegexValidator.new(/(?:^|(.)(?!\1))(\d)\2(?!\2)/),
+        does_not_decrease_validator,
       ],
     )
   end
