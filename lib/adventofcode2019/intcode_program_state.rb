@@ -2,7 +2,26 @@
 module Adventofcode2019
   IntcodeProgramState = Ivo.new(:codes, :opcode_position) do
     def next
-      self.class.new(next_codes, opcode_position + 4)
+      case opcode
+      when 1, 2
+        left_operand = codes[codes[opcode_position + 1]]
+        right_operand = codes[codes[opcode_position + 2]]
+        result_position = codes[opcode_position + 3]
+
+        result = case opcode
+        when 1
+          left_operand + right_operand
+        when 2
+          left_operand * right_operand
+        end
+
+        next_codes = codes.merge(result_position => result)
+        next_opcode_position = opcode_position + 4
+      else
+        raise("Unexpected opcode: #{opcode}")
+      end
+
+      self.class.new(next_codes, next_opcode_position)
     end
 
     def finished?
@@ -19,25 +38,8 @@ module Adventofcode2019
 
     private
 
-    def next_codes
-      result_position = codes[opcode_position + 3]
-      codes.merge(result_position => calculate_result)
-    end
-
     def opcode
       codes[opcode_position]
-    end
-
-    def calculate_result
-      left_operand = codes[codes[opcode_position + 1]]
-      right_operand = codes[codes[opcode_position + 2]]
-
-      case opcode
-      when 1
-        left_operand + right_operand
-      when 2
-        left_operand * right_operand
-      end
     end
   end
 end
