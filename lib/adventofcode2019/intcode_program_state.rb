@@ -34,6 +34,22 @@ module Adventofcode2019
 
         next_codes = codes
         next_instruction_pointer = instruction_pointer + 2
+      when 5
+        next_codes = codes
+        next_instruction_pointer = first_value != 0 ? second_value : instruction_pointer + 3
+      when 6
+        next_codes = codes
+        next_instruction_pointer = first_value == 0 ? second_value : instruction_pointer + 3
+      when 7
+        value = first_value < second_value ? 1 : 0
+
+        next_codes = codes.merge(third_parameter => value)
+        next_instruction_pointer = instruction_pointer + 4
+      when 8
+        value = first_value == second_value ? 1 : 0
+
+        next_codes = codes.merge(third_parameter => value)
+        next_instruction_pointer = instruction_pointer + 4
       else
         raise("Unexpected opcode: #{opcode}")
       end
