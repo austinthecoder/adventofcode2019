@@ -20,11 +20,23 @@ RSpec.describe "app" do
         '02' => '2,3,0,6,99',
         '03' => '2,4,4,5,99,9801',
         '04' => '30,1,1,4,2,5,6,0,99',
+        '06' => '1002,4,3,4,99',
       }.each do |suffix, expected|
         result = app.run_intcode_program(program_file_path: "#{files_dir}/sample_program_#{suffix}.txt")
         expect(result.to_s).to eq(expected)
         expect(result.finished?).to eq(true)
       end
+    end
+
+    it "captures inputs and outputs" do
+      suffix = '05'
+      outputs = []
+      app.run_intcode_program(
+        program_file_path: "#{files_dir}/sample_program_#{suffix}.txt",
+        on_input: -> { 123 },
+        on_output: ->(output) { outputs << output }
+      )
+      expect(outputs).to eq([123])
     end
   end
 

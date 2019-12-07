@@ -15,7 +15,7 @@ module Adventofcode2019
       bulk_fuel_calculator.calculate(masses_file_path: masses_file_path)
     end
 
-    def run_intcode_program(program_file_path:, noun: nil, verb: nil)
+    def run_intcode_program(program_file_path:, noun: nil, verb: nil, on_input: nil, on_output: nil)
       # from: 10,20,30
       #   to: { 0 => 10, 1 => 20, 2 => 30 }
       codes = File
@@ -27,8 +27,8 @@ module Adventofcode2019
       codes = codes.merge(1 => noun) if noun
       codes = codes.merge(2 => verb) if verb
 
-      state = IntcodeProgramState.with(codes: codes, opcode_position: 0)
-      state = state.next while !state.finished?
+      state = IntcodeProgramState.with(codes: codes, instruction_pointer: 0)
+      state = state.next(on_input: on_input, on_output: on_output) while !state.finished?
       state
     end
 

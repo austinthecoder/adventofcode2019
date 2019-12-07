@@ -70,4 +70,20 @@ RSpec.describe "days" do
       end
     end
   end
+
+  context "day 5" do
+    context "part 1" do
+      it "13547311" do
+        outputs = []
+
+        app.run_intcode_program(
+          program_file_path: "#{files_dir}/day_05_program.txt",
+          on_input: -> { 1 },
+          on_output: ->(output) { outputs << output },
+        )
+
+        expect(outputs).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 13547311])
+      end
+    end
+  end
 end
