@@ -16,23 +16,22 @@ RSpec.describe "app" do
   describe "#run_intcode_program" do
     it "runs the program returning the final state" do
       {
-        '01' => '2,0,0,0,99',
-        '02' => '2,3,0,6,99',
-        '03' => '2,4,4,5,99,9801',
-        '04' => '30,1,1,4,2,5,6,0,99',
-        '06' => '1002,4,3,4,99',
-      }.each do |suffix, expected|
-        result = app.run_intcode_program(program_file_path: "#{files_dir}/sample_program_#{suffix}.txt")
+        '1,0,0,0,99' => '2,0,0,0,99',
+        '2,3,0,3,99' => '2,3,0,6,99',
+        '2,4,4,5,99,0' => '2,4,4,5,99,9801',
+        '1,1,1,4,99,5,6,0,99' => '30,1,1,4,2,5,6,0,99',
+        '1002,4,3,4,33' => '1002,4,3,4,99',
+      }.each do |program, expected|
+        result = app.run_intcode_program(program: program)
         expect(result.to_s).to eq(expected)
         expect(result.finished?).to eq(true)
       end
     end
 
     it "captures inputs and outputs" do
-      suffix = '05'
       outputs = []
       app.run_intcode_program(
-        program_file_path: "#{files_dir}/sample_program_#{suffix}.txt",
+        program: '3,0,4,0,99',
         on_input: -> { 123 },
         on_output: ->(output) { outputs << output }
       )

@@ -15,11 +15,19 @@ module Adventofcode2019
       bulk_fuel_calculator.calculate(masses_file_path: masses_file_path)
     end
 
-    def run_intcode_program(program_file_path:, noun: nil, verb: nil, on_input: nil, on_output: nil)
+    def run_intcode_program(
+      program: nil,
+      program_file_path: nil,
+      noun: nil,
+      verb: nil,
+      on_input: nil,
+      on_output: nil
+    )
+      program ||= File.read(program_file_path)
+
       # from: 10,20,30
       #   to: { 0 => 10, 1 => 20, 2 => 30 }
-      codes = File
-        .read(program_file_path)
+      codes = program
         .split(",")
         .each_with_index
         .reduce({}) { |result, (code, index)| result.merge(index => code.to_i) }
