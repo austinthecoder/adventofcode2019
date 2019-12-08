@@ -24,7 +24,6 @@ RSpec.describe "app" do
       }.each do |program, expected|
         result = app.run_intcode_program(program: program)
         expect(result.to_s).to eq(expected)
-        expect(result.finished?).to eq(true)
       end
     end
 

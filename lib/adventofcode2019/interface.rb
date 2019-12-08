@@ -35,9 +35,88 @@ module Adventofcode2019
       codes = codes.merge(1 => noun) if noun
       codes = codes.merge(2 => verb) if verb
 
-      state = IntcodeProgramState.with(codes: codes, instruction_pointer: 0)
-      state = state.next(on_input: on_input, on_output: on_output) while !state.finished?
-      state
+      instruction_pointer = 0
+
+      loop do
+        opcode = codes[instruction_pointer] % 100
+
+        break if opcode == 99
+
+        first_parameter_mode = (codes[instruction_pointer] / 100) % 10
+        second_parameter_mode = (codes[instruction_pointer] / 1_000) % 10
+
+        first_parameter = codes[instruction_pointer + 1]
+        second_parameter = codes[instruction_pointer + 2]
+        third_parameter = codes[instruction_pointer + 3]
+
+        first_value = case first_parameter_mode
+        when 0
+          codes[first_parameter]
+        when 1
+          first_parameter
+        end
+
+        second_value = case second_parameter_mode
+        when 0
+          codes[second_parameter]
+        when 1
+          second_parameter
+        end
+
+        case opcode
+        when 1, 2
+          result = case opcode
+          when 1
+            first_value + second_value
+          when 2
+            first_value * second_value
+          end
+
+          codes = codes.merge(third_parameter => result)
+          instruction_pointer = instruction_pointer + 4
+        when 3
+          input = if on_input
+            on_input.()
+          else
+            print 'input: '
+            gets
+          end
+
+          input = input.to_i
+
+          codes = codes.merge(first_parameter => input)
+          instruction_pointer = instruction_pointer + 2
+        when 4
+          if on_output
+            on_output.(first_value)
+          else
+            puts "output: #{first_value}"
+          end
+
+          codes = codes
+          instruction_pointer = instruction_pointer + 2
+        when 5
+          codes = codes
+          instruction_pointer = first_value != 0 ? second_value : instruction_pointer + 3
+        when 6
+          codes = codes
+          instruction_pointer = first_value == 0 ? second_value : instruction_pointer + 3
+        when 7
+          value = first_value < second_value ? 1 : 0
+
+          codes = codes.merge(third_parameter => value)
+          instruction_pointer = instruction_pointer + 4
+        when 8
+          value = first_value == second_value ? 1 : 0
+
+          codes = codes.merge(third_parameter => value)
+          instruction_pointer = instruction_pointer + 4
+        else
+          raise("Unexpected opcode: #{opcode}")
+        end
+      end
+
+      codes.values.join(',')
     end
 
     def calculate_distance_to_closest_intersection(wires_file_path:)

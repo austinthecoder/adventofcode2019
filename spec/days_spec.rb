@@ -23,7 +23,7 @@ RSpec.describe "days" do
           noun: 12,
           verb: 2,
         )
-        expect(result[0]).to eq(10566835)
+        expect(result.split(',')[0]).to eq('10566835')
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe "days" do
           noun: 23,
           verb: 47,
         )
-        expect(result[0]).to eq(19690720)
+        expect(result.split(',')[0]).to eq('19690720')
       end
     end
   end
