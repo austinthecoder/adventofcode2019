@@ -100,4 +100,15 @@ RSpec.describe "days" do
       end
     end
   end
+
+  context "day 6" do
+    context "part 1" do
+      it "295936" do
+        result = app.count_total_direct_and_indirect_orbits(
+          orbits_file_path: "#{files_dir}/day_06_orbits.txt"
+        )
+        expect(result).to eq(295_936)
+      end
+    end
+  end
 end
