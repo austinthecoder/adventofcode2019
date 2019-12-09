@@ -156,31 +156,9 @@ module Adventofcode2019
     def count_total_direct_and_indirect_orbits(orbits_file_path:)
       orbits = File.readlines(orbits_file_path).map { |line| line.strip.split(")") }
 
-      orbit_map = build_orbit_map(['COM'], orbits)
+      orbit_map = OrbitMap.build(['COM'], orbits)
 
-      # puts JSON.pretty_generate(orbit_map)
-
-      total_direct_and_indirect_orbits(orbit_map['COM'])
-    end
-
-    private
-
-    def build_orbit_map(objects, orbits)
-      objects.reduce({}) do |result, object|
-        orbiters = orbits
-          .select { |orbitee, _| orbitee == object }
-          .map { |_, orbiter| orbiter }
-
-        result.merge(object => build_orbit_map(orbiters, orbits))
-      end
-    end
-
-    def total_direct_and_indirect_orbits(orbit_map)
-      orbit_map_size(orbit_map) + orbit_map.sum { |_, orbit_map| total_direct_and_indirect_orbits(orbit_map) }
-    end
-
-    def orbit_map_size(orbit_map)
-      orbit_map.sum { |_, sub_orbit_map| 1 + orbit_map_size(sub_orbit_map) }
+      orbit_map['COM'].total_direct_and_indirect_orbits
     end
   end
 end

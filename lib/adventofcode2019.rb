@@ -1,7 +1,9 @@
 # frozen_string_literal: true
+require 'json'
+require 'forwardable'
+
 require 'icy'
 require 'ivo'
-require 'json'
 
 module Adventofcode2019
   extend self
